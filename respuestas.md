@@ -11,7 +11,7 @@ La forma de Datadog de mantener lo visual abierto a través de la visualización
 a partir de cientos de tecnologías para visualización, resolución de problemas, aprendizaje automático, alertas y más, mantenga el visual abierto. No pierdas tu camino.
 Nunca pierda de vista la dirección en la que quiere ir. No se pierda en un mar de resolución de problemas, mire hacia la estrella del norte para ver la dirección.
 
-Repasemos más a fondo cómo funciona Data-dog, qué tan simple y rápido es comenzar:
+Repasemos más a fondo cómo funciona Data-dog, qué tan simple y rápido es comenzar: 
 
 ## Configuracion Rapida
 ### Sistema Operativo
