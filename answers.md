@@ -15,7 +15,9 @@ Never lose sight of the direction you want to go. Don't get lost in a troublesho
 
 Let's go over dig deeper how Data-dog works, how simple and fast it is to get started:
 
+
 ## Easy Setup
+
 ### :computer: Operating System 
 Whether you're a master of Microsoft Operating Systems, a Linux Ninja, or a Mac OS Wizard; or you've containerized your application (look at you, seriously) Datadog has you covered. Sign up for a free Datadog account, click on Integrations > Agent, download your agent and get ready to ingest.
 
@@ -27,6 +29,7 @@ Once the Agent is installed, you'll be able to access the Datadog Agent Manager 
 DAM allows you to review the Agent's Status, look at Logs, review Settings, reach out to Support by using Flare and Restart the Agent after making any configuration change. Super Helpful  :thumbsup:
 
 ### Tagging
+
 As part of our setup, we'll want to use Tags in our Agent config file. Think of tags as a way of adding dimensions to Datadog telemetries so they can be filtered, aggregated, and compared in Datadog visualizations. 
 
 We'll find the Agent config file (in my particular case, again, using Windows) in C:\ProgramData\Datadog\datadog.yaml
@@ -53,13 +56,16 @@ I have added 3 tags, ENV for Environment, OS for Operating System, and location 
 :point_up: Don't forget to restart your agent once you've added your tags to the Agent config file, and see the new host in Datadog Console.
 
 ### conf.d 
+
 Now that we have the Agent running, we can really start to customize our Agent. Navigate to C:\ProgramData\Datadog\conf.d\ and here you'll find all the out-of-the-box integrations Datadog can talk to. Let's say you want to monitor Apache, boom open apache.d/ or maybe a connection to nagios, get in that nagios.d/ folder. The world is your oyster (or at least your Datadog directory is).
 
 Every folder has a corresponding conf.yaml.example to get you started, just make sure you create a conf.yaml per each configuration on it's corresponding folder, edit the values for each integration and restart your Agent. 
 
 Let's go over a few integrations I need to setup :smirk:
 
+
 ### Databases
+
 But what if I want to monitor Databases? I hear you saying out loud :bowtie:
 
 Funny you asked, that's EXACTLY what I needed to configure next... By the way, Datadog has well over 400 [supported integrations](https://docs.datadoghq.com/integrations/) and each integration has detailed instructions, I recommend you browse through and see what you can take advantage of
@@ -69,7 +75,9 @@ Funny you asked, that's EXACTLY what I needed to configure next... By the way, D
 ![PostgreSQLConf](https://i.imgur.com/7FuMCKn.png)
 I created the conf.yaml, following the instructions from Datadog's integration page. Easy Peasy.
 
+
 ## Custom Checks
+
 You: Well... what about scripts Luis? What if I wrote a script and I wanted the result to be shipped to Datadog uh?!
 
 Me:  I know, I know exactly what you're saying, this is getting a little weird..
@@ -127,7 +135,9 @@ In Datadog's Console > Metrics > Summary > Select the Metric > Under Metadata, E
 ![CMetricIntervalChangethroughConsole](https://i.imgur.com/ivXVdPB.png)
 
 
+
 ## DAM DAM DAM
+
 Assuming you haven't restarted DAM, Let's take a look at what DAM would look like if everything we've done so far has been configured correctly:
 
 Let's go back to DAM, restart the Agent and take a look at Status > Collector
@@ -144,13 +154,26 @@ I see that cmetrics & postgres are good to go! This means we should expect Datad
 
 And we are good to go! :hand:
 
-## Visualizing Data & Datadog API
-Let's pivot and talk about the [Datadog API](https://docs.datadoghq.com/api/), timeboards with metrics; as you can see below I created the dashboard "Hello Datadog Dashboard" using Postman.
+## Visualizing Data & Datadog's API
 
-[Postman](https://www.postman.com/) is a software development tool that enables us to test calls to APIs, in this particular case I've configured it to use my account and sent the following payloads:
+Leveraging [Postman] (https://www.postman.com), a software development tool used to test API calls, we can make [Datadog API](https://docs.datadoghq.com/api/) calls to create Timeboards. For the next excercise, let's create timeboards with the following requirements:
+
+[] Our "CMetric" metric scoped on my Windows Development desktop
+[] Any metric from the Integration on your Database with the anomaly function applied
+[] Our "CMetric" metric with the rollup function applied to sum up all the points for the past hour into one bucket
+
+First thing we'll need, assuming we have Postman installed, is to get the Datadog Postman collection and import it. Datadog has a really good guide [here](https://docs.datadoghq.com/getting_started/api/) that goes over everything we'll need. Follow the guide, use the Authentication Check collection and your environment, and send the request. If you have everything setup correctly, you should get a "valid": true response from Datadog's API.
+
+![DatadogPostmanCollection](https://i.imgur.com/BJrcuA4.png)
+
+
+Now we're ready to talk to Datadog's API through Postman, isn't that exciting!?  
+
 
 ### Payload 1:
+
 ### Payload 2:
+
 ### Payload 3:
 
 Now that we've created our dashboard from Postman via API calls, let's see how it looks:
@@ -162,4 +185,26 @@ Anomolies give you a historical trend for metrics, when a metric is outside of t
 This shows that the metric is behaving outside of the "normal" historical range; Can you think of any use cases?
 
 ## Monitoring Data
-WIP
+
+
+## Collecting APM Data
+
+
+## Other Uses?
+
+
+
+
+
+
+
+
+
+
+
+
+Fork this repo.
+Answer the questions in answers.md
+Commit as much code as you need to support your answers.
+Submit a pull request.
+Don't forget to include links to your dashboard(s), even better links and screenshots. We recommend that you include your screenshots inline with your answers.
