@@ -14,9 +14,15 @@ Never lose sight of the direction you want to go. Don't get lost in a troublesho
 Let's go over dig deeper how Data-dog works, how simple and fast it is to get started:
 
 ## Easy Setup
-### Operating System
-Whether you're a master of Microsoft Operating Systems, a Linux Ninja, or a Mac OS Wizard; or you've containerized your application (look at you, seriously) Datadog has you covered; 
-sign up for a free Datadog account, click on Integrations > Agent, download your agent and get ready to ingest.
+### :computer: Operating System 
+Whether you're a master of Microsoft Operating Systems, a Linux Ninja, or a Mac OS Wizard; or you've containerized your application (look at you, seriously) Datadog has you covered. Sign up for a free Datadog account, click on Integrations > Agent, download your agent and get ready to ingest.
+
+Once the Agent is installed, you'll be able to access the Datadog Agent Manager (or DAM) on (Windows/MacOS) by visiting it's default location http://127.0.0.1:5002
+
+![WindowsPCDatadogAgent](https://imgur.com/a/85pW91C)
+
+:high_brightness: Pro Tip:
+DAM allows you to review the Agent's Status, look at Logs, review Settings, reach out to Support by using Flare and Restart the Agent after making any configuration change. Super Helpful  :thumbsup:
 
 ### Tagging
 As part of our setup, we'll want to use Tags in our Agent config file. Think of tags asa way of adding dimensions to Datadog telemetries so they can be filtered, aggregated, and
@@ -35,7 +41,7 @@ In order to create a custom Agent check, you'll need 2 files:
     1. Conf file
     2. Script file
 
-![Pro Tip](https://u.cdn.sera.to/content/images/93/23193/23193.png) Did you know?
+:high_brightness: Pro Tip:
 Did you know you can change the collection interval without modifying script check files you created?
 Go here, do this, and do that...
 
@@ -51,7 +57,7 @@ Now that we've created our dashboard from Postman via API calls, let's see how i
 
 We can see the CMetric's average, our rollup and any associated anomoly's, very cool indeed.
 
-![Pro Tip](https://u.cdn.sera.to/content/images/93/23193/23193.png) Did you know?
+:high_brightness: Pro Tip:
 Anomolies give you a historical trend for metrics, when a metric is outside of the threshold, the line becomes red.
 This shows that the metric is behaving outside of the "normal" historical range; Can you think of any use cases?
 
