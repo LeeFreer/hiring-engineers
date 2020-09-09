@@ -29,7 +29,7 @@ As part of our setup, we'll want to use Tags in our Agent config file. Think of 
 
 We'll find the Agent config file (in my particular case, again, using Windows) in C:\ProgramData\Datadog\datadog.yaml
 
-```
+```python
 ...
 syslog_key: ""
 syslog_pem: ""
@@ -73,17 +73,61 @@ You: Well... what about scripts Luis? What if I wrote a script and I wanted the 
 Me:  I know, I know exactly what you're saying, this is getting a little weird..
 
 As long as the check is written on a supported language (think Go, NodeJS, Python, etc), you won't have any problems.
-In fact, I have written a short script that randomly outputs a number, between 0 and 10000, in python.
-In order to create a custom Agent check, you'll need the following:
+In fact, I have written a short python script you can reference below.
+In order to create a custom Agent check, both files must have the same name and must be created as follows:
 
-    1. Conf file
-    2. Script file
+*Script file:* (This file lives in C:\ProgramData\Datadog\checks.d\)
+
+This is my Python script, our goal is to randomly get a number between 0 and 10000. This number will then be sent to Datadog, to test the custom check functionality.
+
+```python
+import random
+    
+try:
+    from datadog_checks.base import AgentCheck
+except ImportError:
+    from checks import AgentCheck
+        
+__version__ = "1.0.0"
+    
+class cmetric(AgentCheck):
+    def check(self, instance):
+        self.gauge(
+                "cmetric_gauge",
+                random.randint(0,10000),
+                tags=["cmetric_type:gauge"],
+        )
+```
+    
+*Conf file:* (This file lives in C:\ProgramData\Datadog\conf.d\)
+
+This is my configuration file for the Python script, our goal is send a new number to Datadog every 45 seconds.
+
+```python
+init_config:
+instances:
+  - min_collection_interval: 45
+```
+
+We save both files, restart the Agent through DAM, and go check Datadog's Console...  :+1:
+
+and...
+
+![CMEtric](https://i.imgur.com/3zE46xt.png)
+
+We are good to go!
 
 :high_brightness: Pro Tip:
 Did you know you can change the collection interval without modifying script check files you created?
-Go here, do this, and do that...
+
+In Datadog's Console > Metrics > Summary > Select the Metric > Under Metadata, Edit > Enter new Interval value
+
+![CMetricIntervalChangethroughConsole](https://i.imgur.com/ivXVdPB.png)
+
 
 ## DAM DAM DAM
+Assuming you haven't restarted DAM, Let's take a look at what DAM would look like if everything we've done so far has been configured correctly:
+
 Let's go back to DAM, restart the Agent and take a look at Status > Collector
 
 
