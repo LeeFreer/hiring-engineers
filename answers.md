@@ -1,7 +1,9 @@
-
-# Data Visualization: Datadog's North Star :star:
-## Always see the horizon
-![North Star](http://cdn.lowgif.com/full/4c0f211082b1edb6-.gif)
+<p align="center">
+    <img src="http://cdn.lowgif.com/full/4c0f211082b1edb6-.gif" height="400">
+    <h1 align="center">Data Visualization: Datadog's North Star :star:</h1>
+  </a>
+  <p align="center">Always see the horizon</p>
+</p>
 
 Building a successful business is not about climbing ladders, or fending off competition in a particular space; it's about building momentum and continuing to move forward.
 When a business grows, "Growing pains" are more than just obstacles or obstructions, sometimes you find yourself not moving as much as you'd like to. 
