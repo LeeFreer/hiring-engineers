@@ -13,22 +13,21 @@ Datadog's way to keep the visual open through visualization of metrics, traces a
 from hundred of technologies for visualization, troubleshooting, machine learning, alerting and more, keep the visual open. Don't lose your way.
 Never lose sight of the direction you want to go. Don't get lost in a troubleshooting sea, look up to the north star for direction.
 
-Let's go over dig deeper how Data-dog works, how simple and fast it is to get started:
+Let's dig deeper on exactly how Data-dog works, set that troubleshooting-free horizon and take advantage of what it offers...
 
 
-## Easy Setup
+### Smart Setup
+Whether you're a master of Microsoft Operating Systems, a Linux Ninja, or a Mac OS Wizard; or have containerized applications in an enterprise (look at you, seriously, that's an accomplishment!) Datadog has you covered. 
+Sign up for a free Datadog account, click on Integrations > Agent, download your agent and get ready to ingest.
 
-### :computer: Operating System 
-Whether you're a master of Microsoft Operating Systems, a Linux Ninja, or a Mac OS Wizard; or you've containerized your application (look at you, seriously) Datadog has you covered. Sign up for a free Datadog account, click on Integrations > Agent, download your agent and get ready to ingest.
-
-Once the Agent is installed, you'll be able to access the Datadog Agent Manager (or DAM) on (Windows/MacOS) by visiting it's default location http://127.0.0.1:5002
+For my purposes, I'll be using a Windows 10 Development Desktop; once the Agent is installed, you'll be able to access the Datadog Agent Manager (or DAM) on (Windows/MacOS) by visiting it's default location http://127.0.0.1:5002
 
 ![WindowsPCDatadogAgent](https://i.imgur.com/ZCVWw2Z.png)
 
 :high_brightness: Pro Tip:
 DAM allows you to review the Agent's Status, look at Logs, review Settings, reach out to Support by using Flare and Restart the Agent after making any configuration change. Super Helpful  :thumbsup:
 
-### Tagging
+### Thrilling Tagging
 
 As part of our setup, we'll want to use Tags in our Agent config file. Think of tags as a way of adding dimensions to Datadog telemetries so they can be filtered, aggregated, and compared in Datadog visualizations. 
 
@@ -55,7 +54,7 @@ I have added 3 tags, ENV for Environment, OS for Operating System, and location 
 
 :point_up: Don't forget to restart your agent once you've added your tags to the Agent config file, and see the new host in Datadog Console.
 
-### conf.d 
+### Crafty conf.d 
 
 Now that we have the Agent running, we can really start to customize our Agent. Navigate to C:\ProgramData\Datadog\conf.d\ and here you'll find all the out-of-the-box integrations Datadog can talk to. Let's say you want to monitor Apache, boom open apache.d/ or maybe a connection to nagios, get in that nagios.d/ folder. The world is your oyster (or at least your Datadog directory is).
 
@@ -64,9 +63,9 @@ Every folder has a corresponding conf.yaml.example to get you started, just make
 Let's go over a few integrations I need to setup :smirk:
 
 
-### Databases
+### Delightful Databases
 
-But what if I want to monitor Databases? I hear you saying out loud :bowtie:
+But what if we want to monitor Databases? I hear you saying out loud :bowtie:
 
 Funny you asked, that's EXACTLY what I needed to configure next... By the way, Datadog has well over 400 [supported integrations](https://docs.datadoghq.com/integrations/) and each integration has detailed instructions, I recommend you browse through and see what you can take advantage of
 
@@ -76,7 +75,7 @@ Funny you asked, that's EXACTLY what I needed to configure next... By the way, D
 I created the conf.yaml, following the instructions from Datadog's integration page. Easy Peasy.
 
 
-## Custom Checks
+## Capable Custom Checks
 
 You: Well... what about scripts Luis? What if I wrote a script and I wanted the result to be shipped to Datadog uh?!
 
@@ -136,7 +135,7 @@ In Datadog's Console > Metrics > Summary > Select the Metric > Under Metadata, E
 
 
 
-## DAM DAM DAM
+## Oh DAM
 
 Assuming you haven't restarted DAM, Let's take a look at what DAM would look like if everything we've done so far has been configured correctly:
 
@@ -154,7 +153,7 @@ I see that cmetrics & postgres are good to go! This means we should expect Datad
 
 And we are good to go! :hand:
 
-## Visualizing Data & Datadog's API
+## Visualizing Datadog's Data through APIs
 
 Leveraging [Postman] (https://www.postman.com), a software development tool used to test API calls, we can make [Datadog API](https://docs.datadoghq.com/api/) calls to create Timeboards. For the next excercise, let's create timeboards with the following requirements:
 
@@ -188,7 +187,7 @@ Now let's build the body of the request:
 As far as the Dashboard, let's call it "Postman Integration Dashboard", 
 
 ### Graph 1:
-We are ready to define what the dashboard will look like; let's modify the Body since, that section is where we create the attributes for our dashboard:
+We are ready to define what the first graph will look like; For q (which is query) we'll want the Average of the CMetric gauge, we created this integration in a previous excercise. 
 
 ```JSON
 ...
@@ -208,8 +207,9 @@ We are ready to define what the dashboard will look like; let's modify the Body 
 :white_check_mark: Graph 1: "CMetric" Average Gauge :thumbsup:
 
 ### Graph 2:
-For our second graph, we'll pull metrics from our PostgreSQL database, adding the anomaly function; this function detects metric fluctuations and displays it on our graph, it's very useful for troubleshooting purposes. 
-The [anomaly function](https://docs.datadoghq.com/monitors/monitor_types/anomaly/) is expecting an algorithm with no repeating seasonal patterns. As always, feel free to dive deeper into the Datadog documentation. Our dashboard will show anamolies based on the percent of usage connections.
+For our second graph, we'll pull metrics from our PostgreSQL database integration, adding the anomaly function; this function detects metric fluctuations and displays it on our graph, it's very useful for troubleshooting purposes. 
+The [anomaly function](https://docs.datadoghq.com/monitors/monitor_types/anomaly/) is expecting an algorithm with no repeating seasonal patterns. 
+As always, feel free to dive deeper into the Datadog documentation. Our dashboard will show anamolies based on the percent of usage connections.
 
 
 ```JSON
@@ -232,7 +232,7 @@ The [anomaly function](https://docs.datadoghq.com/monitors/monitor_types/anomaly
 :white_check_mark: Payload 2: PostgreSQL with Anomalies :thumbsup:
 
 ### Graph 3:
-Lastly, we need "CMetric" with the [rollup function](https://docs.datadoghq.com/dashboards/functions/rollup/) for custom time aggregation, basically to sum up all points for the past hour into one bucket.
+Lastly, we need "CMetric" with the [rollup function](https://docs.datadoghq.com/dashboards/functions/rollup/) for custom time aggregation, basically to sum up all points for the past hour into one entry. Once the dashboard is created, change the timeframe for this dashboard to 24 hours, so we get 24 data points.
 
 ```JSON
 ...
@@ -254,8 +254,7 @@ Lastly, we need "CMetric" with the [rollup function](https://docs.datadoghq.com/
 
 :white_check_mark: Graph 3: CMetric with RollUp :thumbsup:
 
-Well done Overachieving Oscar!
-Let's combine all our powers and...
+Well done Overachieving Oscar! Let's combine all our powers, submit the payload and...
 
 ```JSON
 {
@@ -320,25 +319,32 @@ Let's combine all our powers and...
 }
 ```
 
-And this is what it looks like once submitted through Postman
+...this is what it looks like once submitted through Postman! We've just created a dashboard via API in a few minutes. Super. Easy.
 ![PostmanDashboard](https://i.imgur.com/Epc79Ra.png)
 
 For your live viewing pleasure, you can find the dashboard [here](https://p.datadoghq.com/sb/i3rc15h7hhkukyes-bd3e3184ece0639a6e384539b80d9fdc)
 
 
-:high_brightness: Pro Tip:
+To close this chapter on Visualizations, I want to give you 2 Pro tips:
+
+:high_brightness: Visualizations Pro Tip #1:
 Anomolies give you a historical trend for metrics, when a metric is outside of the threshold, the line becomes red.
 This shows that the metric is behaving outside of the "normal" historical range. Super helpful for tracking metrics that shouldn't be outside of a normal threshold.
 Can you think of other uses cases?
 
-### 
+:high_brightness: Visualizations Pro Tip #2:
+Before we turn the page on Dashboards and Graphs, there is one more feature I'd like to share with you. Annotations.
+Say we found something interesting in a graph, if you click on the Share button > Send snapshot, you can annotate that particular portion of the graph, and share it with a team member. They will recieve an email, with a link to the graph with your notes.
 
+![DatadogAnnotation](https://i.imgur.com/YjcNVY3.png)
 
+### Magnificent Monitors (or Monitoring Data)
+So far we have installed the agent on a system, added integrations (built-in and scripting languaged based); we have also created timeline dashboards and are able to collaborate with team members on existing data, but we wouldn't expect someone to sit on a 24/7/365 NOC looking at monitors.
+Here is where Monitoring Data comes into place.
 
-## Monitoring Data
+Using CMetric (our 45 second, ever running, python script, that returns a random number between 0 and 1000) we'll configure a few monitors that will notify us when the metric goes above a certain value.
 
-
-## Collecting APM Data
+## APM Data
 
 
 ## Other Uses?
@@ -346,16 +352,7 @@ Can you think of other uses cases?
 
 
 
+..and we've just scratched beginning. Set your horizon with Datadog, focus on what matters.
 
-
-
-
-
-
-
-
-Fork this repo.
-Answer the questions in answers.md
-Commit as much code as you need to support your answers.
-Submit a pull request.
-Don't forget to include links to your dashboard(s), even better links and screenshots. We recommend that you include your screenshots inline with your answers.
+Did you experience any problems through the guide? Do you have any questions or care to give us feedback? 
+Shoot me a message at lf.arano@datadoghq.com
