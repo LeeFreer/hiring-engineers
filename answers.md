@@ -158,31 +158,190 @@ And we are good to go! :hand:
 
 Leveraging [Postman] (https://www.postman.com), a software development tool used to test API calls, we can make [Datadog API](https://docs.datadoghq.com/api/) calls to create Timeboards. For the next excercise, let's create timeboards with the following requirements:
 
-[] Our "CMetric" metric scoped on my Windows Development desktop
-[] Any metric from the Integration on your Database with the anomaly function applied
-[] Our "CMetric" metric with the rollup function applied to sum up all the points for the past hour into one bucket
+- [ ] Graph 1: Our "CMetric" metric scoped on my Windows Development desktop
+- [ ] Graph 2: Any metric from the Integration on your Database with the anomaly function applied
+- [ ] Graph 3: Our "CMetric" metric with the rollup function applied to sum up all the points for the past hour into one bucket
 
-First thing we'll need, assuming we have Postman installed, is to get the Datadog Postman collection and import it. Datadog has a really good guide [here](https://docs.datadoghq.com/getting_started/api/) that goes over everything we'll need. Follow the guide, use the Authentication Check collection and your environment, and send the request. If you have everything setup correctly, you should get a "valid": true response from Datadog's API.
+First thing we'll need, assuming we have Postman installed, is to get the Datadog Postman collection and import it. 
+Datadog has a really good guide [here](https://docs.datadoghq.com/getting_started/api/) that goes over everything we'll need. Follow the guide, use the Authentication Check collection and your environment, and send the request. If you have everything setup correctly, you should get a "valid": true response from Datadog's API.
+
+:point_up: Something I'd like to point, if you experience issues opening the download Datadog Collection json file try to unzip it first. I believe the file has a .json extension, however, it's an archive.
+
 
 ![DatadogPostmanCollection](https://i.imgur.com/BJrcuA4.png)
 
 
 Now we're ready to talk to Datadog's API through Postman, isn't that exciting!?  
 
+As stated above, let's start with the "CMetric" scoped from the previous excercise. Start off by selecting Dashboards > POST Create a Dashboard under Collections 
 
-### Payload 1:
+![DatadogPostmanDashboardCollection](https://i.imgur.com/6um5Hqh.png)
 
-### Payload 2:
 
-### Payload 3:
+Now let's build the body of the request:
 
-Now that we've created our dashboard from Postman via API calls, let's see how it looks:
+1. Title for the Dashboard
+2. Defition Title for each graph
+3. Query for each graph
+4. Title for each graph
 
-We can see the CMetric's average, our rollup and any associated anomoly's, very cool indeed.
+As far as the Dashboard, let's call it "Postman Integration Dashboard", 
+
+### Graph 1:
+We are ready to define what the dashboard will look like; let's modify the Body since, that section is where we create the attributes for our dashboard:
+
+```JSON
+...
+"definition": {
+                "type": "timeseries",
+                "requests": [
+                    {
+                        "q": "avg:cmetric_gauge{*}"
+                    }
+                ],
+                "title": "CMetric Gauge Average"
+            }
+...
+```
+1 out of 3 Done!
+
+:white_check_mark: Graph 1: "CMetric" Average Gauge :thumbsup:
+
+### Graph 2:
+For our second graph, we'll pull metrics from our PostgreSQL database, adding the anomaly function; this function detects metric fluctuations and displays it on our graph, it's very useful for troubleshooting purposes. 
+The [anomaly function](https://docs.datadoghq.com/monitors/monitor_types/anomaly/) is expecting an algorithm with no repeating seasonal patterns. As always, feel free to dive deeper into the Datadog documentation. Our dashboard will show anamolies based on the percent of usage connections.
+
+
+```JSON
+...
+"definition": {
+                "type": "timeseries",
+                "requests": [
+                    {
+                        "q": "anomalies(avg:postgresql.percent_usage_connections{*}, 'basic', 2)"
+                    }
+                ],
+                "title": "PostgreSQL Anomalies"
+            }
+        }
+...
+```
+
+2 out of 3! Well done you!
+
+:white_check_mark: Payload 2: PostgreSQL with Anomalies :thumbsup:
+
+### Graph 3:
+Lastly, we need "CMetric" with the [rollup function](https://docs.datadoghq.com/dashboards/functions/rollup/) for custom time aggregation, basically to sum up all points for the past hour into one bucket.
+
+```JSON
+...
+"definition": {
+                "type": "timeseries",
+                "requests": [
+                    {
+                        "q": "avg:cmetric.gauge{*}.rollup(sum, 3600)"
+                    }
+                ],
+                "title": "CMetric with Rollup"
+            }
+        }
+...
+```
+
+
+3 out of 3 completed!
+
+:white_check_mark: Graph 3: CMetric with RollUp :thumbsup:
+
+Well done Overachieving Oscar!
+Let's combine all our powers and...
+
+```JSON
+{
+    "title": "Postman Integration Dashboard",
+    "widgets": [
+        {
+            "definition": {
+                "type": "timeseries",
+                "requests": [
+                    {
+                        "q": "avg:cmetric_gauge{*}"
+                    }
+                ],
+                "title": "CMetric Gauge Average"
+            }
+        },
+         {
+            "definition": {
+                "type": "timeseries",
+                "requests": [
+                    {
+                        "q": "anomalies(avg:postgresql.percent_usage_connections{*}, 'basic', 2)"
+                    }
+                ],
+                "title": "PostgreSQL Anomalies"
+            }
+        },
+         {
+            "definition": {
+                "type": "timeseries",
+                "requests": [
+                    {
+                        "q": "avg:cmetric_gauge{*}.rollup(sum, 3600)"
+                    }
+                ],
+                "title": "CMetric with Rollup"
+            }
+        }
+    ],
+    "layout_type": "ordered",
+    "description": "Dashboard created by Postman Integration",
+    "is_read_only": true,
+    "notify_list": [],
+    "template_variables": [
+        {
+            "name": "host",
+            "prefix": "host",
+            "default": "LUIS-DESKTOP"
+        }
+    ],
+    "template_variable_presets": [
+        {
+            "name": "Saved views for hostname 2",
+            "template_variables": [
+                {
+                    "name": "host",
+                    "value": "<HOSTNAME_2>"
+                }
+            ]
+        }
+    ]
+}
+```
+
+And this is what it looks like once submitted through Postman
+![PostmanDashboard]()
+
+For your live viewing pleasure, you can find the dashboard [here](https://p.datadoghq.com/sb/i3rc15h7hhkukyes-bd3e3184ece0639a6e384539b80d9fdc)
+
 
 :high_brightness: Pro Tip:
 Anomolies give you a historical trend for metrics, when a metric is outside of the threshold, the line becomes red.
-This shows that the metric is behaving outside of the "normal" historical range; Can you think of any use cases?
+This shows that the metric is behaving outside of the "normal" historical range. Super helpful for tracking metrics that shouldn't be outside of a normal threshold.
+Can you think of other uses cases?
+
+### 
+
+
+
+
+
+
+
+
+
+
 
 ## Monitoring Data
 
