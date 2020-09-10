@@ -173,7 +173,7 @@ Datadog has a really good guide [here](https://docs.datadoghq.com/getting_starte
 
 Now we're ready to talk to Datadog's API through Postman, isn't that exciting!?  
 
-As stated above, let's start with the "CMetric" scoped from the previous excercise. Start off by selecting Dashboards > POST Create a Dashboard under Collections 
+Start off by selecting Dashboards > POST Create a Dashboard under Collections 
 
 ![DatadogPostmanDashboardCollection](https://i.imgur.com/6um5Hqh.png)
 
@@ -321,7 +321,7 @@ Let's combine all our powers and...
 ```
 
 And this is what it looks like once submitted through Postman
-![PostmanDashboard]()
+![PostmanDashboard](https://i.imgur.com/Epc79Ra.png)
 
 For your live viewing pleasure, you can find the dashboard [here](https://p.datadoghq.com/sb/i3rc15h7hhkukyes-bd3e3184ece0639a6e384539b80d9fdc)
 
@@ -332,14 +332,6 @@ This shows that the metric is behaving outside of the "normal" historical range.
 Can you think of other uses cases?
 
 ### 
-
-
-
-
-
-
-
-
 
 
 
