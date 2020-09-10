@@ -327,22 +327,115 @@ For your live viewing pleasure, you can find the dashboard [here](https://p.data
 
 To close this chapter on Visualizations, I want to give you 2 Pro tips:
 
-:high_brightness: Visualizations Pro Tip #1:
+:high_brightness: Pro Tip - Visualization #1:
 Anomolies give you a historical trend for metrics, when a metric is outside of the threshold, the line becomes red.
 This shows that the metric is behaving outside of the "normal" historical range. Super helpful for tracking metrics that shouldn't be outside of a normal threshold.
 Can you think of other uses cases?
 
-:high_brightness: Visualizations Pro Tip #2:
+:high_brightness: Pro Tip - Visualization #2:
 Before we turn the page on Dashboards and Graphs, there is one more feature I'd like to share with you. Annotations.
 Say we found something interesting in a graph, if you click on the Share button > Send snapshot, you can annotate that particular portion of the graph, and share it with a team member. They will recieve an email, with a link to the graph with your notes.
 
 ![DatadogAnnotation](https://i.imgur.com/YjcNVY3.png)
 
-### Magnificent Monitors (or Monitoring Data)
+## Magnificent Monitors (or Monitoring Data)
 So far we have installed the agent on a system, added integrations (built-in and scripting languaged based); we have also created timeline dashboards and are able to collaborate with team members on existing data, but we wouldn't expect someone to sit on a 24/7/365 NOC looking at monitors.
 Here is where Monitoring Data comes into place.
 
-Using CMetric (our 45 second, ever running, python script, that returns a random number between 0 and 1000) we'll configure a few monitors that will notify us when the metric goes above a certain value.
+For our first monitor, let's use "CMetric" (our 45 second-ever running-python script-that returns a random number between 0 and 10000) we'll configure a few monitors that will notify us when the metric goes above a certain value.
+
+Navigate to Monitors > Create New Monitor: 
+
+![MonitorNewMonitor](https://i.imgur.com/Ucc4XoO.png)
+
+
+Use threshold alert for the detection method, we'll use CMetric_gauge for the metric definition and set alert conditions for 7755 on Alert and 5255 on Warning.
+
+It should look a lot like this
+
+![MonitorParameters](https://i.imgur.com/DRaN2LN.png)
+
+Let's customize the monitor's message! We'll want it to:
+
+- [ ] Send you an email whenever the monitor triggers.
+- [ ] Create different messages based on whether the monitor is in an Alert, Warning, or No Data state.
+- [ ] Include the metric value that caused the monitor to trigger and host ip when the Monitor triggers an Alert state.
+- [ ] When this monitor sends you an email notification, take a screenshot of the email that it sends you.
+
+
+### Say what's happening
+Luckily for us, we can customize all these settings through "Say what's happening"
+Let's say this is an Alert, this should be considered Priority 1 and must be addressed immediately:
+
+We can use variables like {{value}} and {{#is_alert}} to specify key components of the message. You can spend a lot of time customizing this settings, so I'll be nice and leave the [notifications documentation here](https://docs.datadoghq.com/monitors/notifications/?tab=is_warning#message-template-variables) for you.
+
+I also added some text that is necessary in all notification types:
+
+```
+If you are on call and don't know what to do, maybe take a look at this guide [URL].
+If you are confused about this alert, reach out to your Datadog Administrator.
+If you're happy and you know it, clap your hands!
+
+Good Luck!
+
+-Datadog
+```
+
+Once you add what your notifications should look like, scroll all the way down and select Test Notifications to see what they'll look like.
+I'll leave the code associated with each notification type, as well as the actual notification we received via email, when testing the notification feature.
+
+#### Alerts
+```
+{{#is_alert}}
+P1 Alert!!
+CMetric is at {{value}}, and has been above 800 for the past 5 minutes 
+You should troubleshoot this ASAP, contact someone who knows how to fix this or maybe call your boss...
+REMEMBER, SENSE OF URGENCY!
+{{/is_alert}}
+```
+![AlertP1](https://i.imgur.com/v122gl9.png)
+
+
+```
+{{#is_warning}}
+OMG, You should take a look at this...
+CMetric is at {{value}}, and has been above 500 for the past 5 minutes
+I don't want to say you should look at this, but I think you should look at this...
+{{/is_warning}}
+```
+![AlertWarn](https://i.imgur.com/ze0SM5l.png)
+
+
+```
+{{#is_recovery}}
+CMetric has recovered! Hurray!! Current Value is {{value}}
+I don't want to tell you what to do, but should this alert be recovering?
+{{/is_recovery}}
+```
+![AlertNoData](https://i.imgur.com/kTb5Epr.png)
+
+
+```
+{{#is_no_data}}
+P1 Alert!!
+CMetric has not reported any data over the last 5 minutes
+You should troubleshoot this ASAP, contact someone who knows how to fix this or maybe call your boss...
+{{/is_no_data}}
+```
+![AlertRecovery](https://i.imgur.com/G9VHnqT.png)
+
+:high_brightness: Pro Tip:
+Email notifications are not the only way to notify humans for alerts. You can configure [Slack](https://docs.datadoghq.com/integrations/slack/?tab=standardintegration), [PagerDuty](https://docs.datadoghq.com/integrations/pagerduty/), [Microsoft Teams](https://docs.datadoghq.com/integrations/microsoft_teams/) and others. If you're curious on what integrations are available, check out our Documentation on integrations [here](https://docs.datadoghq.com/integrations)
+
+#### Manage Downtime (Sleepy Time)
+Say you're out of the office on vacation, maybe you don't work on weekends, or you're not part of the OnCall rotation group; you don't need this many notifications, now do you? Managing your downtime is as easy as navigating to Monitors > Manage Downtime and creating/customizing downtime monitors:
+
+![SleepyTime](https://i.imgur.com/sGZ4W6X.png)
+
+You should receive an email notification explaining the downtime:
+
+![SleepyTimeExplanation](https://i.imgur.com/i0PStKT.png)
+
 
 ## APM Data
 
